@@ -1,5 +1,7 @@
 from dotenv import load_dotenv
-load_dotenv()          # loads backend/.env (or project-root .env) before anything else
+from pathlib import Path
+# Resolve .env relative to this file so it works regardless of where uvicorn is started from
+load_dotenv(Path(__file__).parent.parent / ".env")
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware

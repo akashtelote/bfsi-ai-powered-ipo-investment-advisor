@@ -68,11 +68,42 @@ class ModelOrchestrator:
             if path.exists():
                 self._models[name] = joblib.load(path)
                 loaded.append(name)
+
+        # Prefer the 6-feature live-only listing model if it exists (no zero-fill bias)
+        live_path = MODELS_DIR / "listing_model_live.pkl"
+        if live_path.exists():
+            self._models["listing_live"] = joblib.load(live_path)
+            loaded.append("listing_live")
+
         self._loaded = bool(loaded)
         if loaded:
             print(f"[ModelOrchestrator] Loaded: {', '.join(loaded)}")
         else:
             print(f"[ModelOrchestrator] No .pkl files found in {MODELS_DIR} - using stubs")
+
+        # Load training medians for imputation (avoids zero-fill bias in full models)
+        self._feature_medians: dict = self._load_feature_medians()
+        if self._feature_medians:
+            print(f"[ModelOrchestrator] Medians loaded for {len(self._feature_medians)} features")
+
+    def _load_feature_medians(self) -> dict:
+        """Load per-feature medians from ipo_master.csv for imputation at inference time.
+
+        During training, missing features are filled with the dataset median.
+        At live inference, we must do the same — otherwise zero-fill biases all
+        predictions toward the worst-case outcome (e.g. zero GMP, zero subscription).
+        """
+        csv_path = MODELS_DIR.parent / "data" / "ipo_master.csv"
+        if not csv_path.exists():
+            return {}
+        try:
+            df = pd.read_csv(csv_path)
+            numeric = df.select_dtypes(include=[np.number]).columns
+            medians = df[numeric].median().to_dict()
+            return medians
+        except Exception as exc:
+            print(f"[ModelOrchestrator] Warning: could not load medians: {exc}")
+            return {}
 
     # --- Financial Health (M3 LightGBM) ---
 
@@ -113,6 +144,12 @@ class ModelOrchestrator:
 
     # --- IPO Risk Scoring (M1 XGBoost) ---
 
+    def _impute(self, features: dict, feat_cols: list) -> dict:
+        """Fill missing features using training medians, not zeros."""
+        medians = getattr(self, "_feature_medians", {})
+        # Also use medians stored in the bundle itself if available
+        return {k: features.get(k, medians.get(k, 0)) for k in feat_cols}
+
     def predict_risk(self, features: dict) -> dict:
         if "risk" not in self._models:
             return self._stub_risk(features)
@@ -120,7 +157,7 @@ class ModelOrchestrator:
         model = bundle["model"]
         le = bundle["label_encoder"]
         feat_cols = bundle["features"]
-        df = pd.DataFrame([{k: features.get(k, 0) for k in feat_cols}])
+        df = pd.DataFrame([self._impute(features, feat_cols)])
         probs = model.predict_proba(df)[0]
         pred_idx = int(model.predict(df)[0])
         classes = le.classes_  # e.g. ['High', 'Low', 'Medium']
@@ -172,7 +209,7 @@ class ModelOrchestrator:
         bundle = self._models["subscription"]
         model = bundle["model"]
         feat_cols = bundle["features"]
-        df = pd.DataFrame([{k: features.get(k, 0) for k in feat_cols}])
+        df = pd.DataFrame([self._impute(features, feat_cols)])
         log_sub = float(model.predict(df)[0])
         overall = float(np.expm1(log_sub))
         return {
@@ -186,13 +223,20 @@ class ModelOrchestrator:
     # --- Listing Price Prediction (M4 Ridge) ---
 
     def predict_listing_gain(self, features: dict) -> float:
+        # Prefer the 6-feature live model (no zero-fill bias) if available
+        if "listing_live" in self._models:
+            bundle = self._models["listing_live"]
+            df = pd.DataFrame([self._impute(features, bundle["features"])])
+            return float(np.clip(bundle["model"].predict(df)[0], -50, 200))
+
         if "listing" not in self._models:
             return 15.0
         bundle = self._models["listing"]
-        model = bundle["model"]
-        feat_cols = bundle["features"]
-        df = pd.DataFrame([{k: features.get(k, 0) for k in feat_cols}])
-        return float(np.clip(model.predict(df)[0], -50, 200))
+        # Use training medians for missing features — not zeros.
+        # The full model was trained with median-imputed data; zero-fill creates a
+        # systematic negative bias (zero GMP, zero subscription → always predicts losses).
+        df = pd.DataFrame([self._impute(features, bundle["features"])])
+        return float(np.clip(bundle["model"].predict(df)[0], -50, 200))
 
     # --- Fraud Detection (M7 Decision Tree) ---
 

@@ -229,8 +229,50 @@ def train_m4_listing_price(df: pd.DataFrame):
     print(f"[M4] CV R2 scores: {scores.round(3)} | Mean: {scores.mean():.3f}")
 
     model.fit(X, y)
-    joblib.dump({"model": model, "features": available}, MODELS_DIR / "listing_model.pkl")
+    medians = df[available].median().to_dict()
+    joblib.dump({"model": model, "features": available, "medians": medians},
+                MODELS_DIR / "listing_model.pkl")
     print(f"[M4] Saved -> {MODELS_DIR / 'listing_model.pkl'}")
+    return model
+
+
+# --- M4-live: Listing Gain (6-feature live-only Ridge) ---
+
+# Exactly the features available at live inference time — no historical data needed.
+# This model has lower R² than M4 but zero systematic bias: it was trained on the
+# same inputs the orchestrator will actually have, so it predicts the right direction.
+_LIVE_FEATURES = [
+    "sentiment_score",    # FinBERT (always available)
+    "ofs_pct",            # from DRHP / user input
+    "promoter_stake_pre", # from DRHP / user input
+    "log_issue_size_cr",  # computed from issue_size_cr
+    "nifty_30d_return",   # yfinance
+    "vix_at_open",        # yfinance
+]
+
+
+def train_m4_live_listing(df: pd.DataFrame):
+    print("\n[M4-live] Training 6-feature live listing model (Ridge)...")
+    available = [c for c in _LIVE_FEATURES if c in df.columns]
+    if len(available) < 3:
+        print(f"[M4-live] Not enough features ({available}), skipping.")
+        return None
+
+    X = df[available].fillna(df[available].median())
+    y = df["listing_gain_pct"].clip(-50, 200)
+
+    model = Pipeline([
+        ("scaler", StandardScaler()),
+        ("ridge", Ridge(alpha=1.0)),
+    ])
+    scores = cross_val_score(model, X, y, cv=5, scoring="r2")
+    print(f"[M4-live] CV R² scores: {scores.round(3)} | Mean: {scores.mean():.3f}")
+    model.fit(X, y)
+
+    medians = df[available].median().to_dict()
+    joblib.dump({"model": model, "features": available, "medians": medians},
+                MODELS_DIR / "listing_model_live.pkl")
+    print(f"[M4-live] Saved -> {MODELS_DIR / 'listing_model_live.pkl'}")
     return model
 
 
@@ -333,6 +375,9 @@ def main(target: str = "all"):
         train_m6_subscription(df)
     if target in ("all", "m4"):
         train_m4_listing_price(df)
+        train_m4_live_listing(df)   # 6-feature live model (no zero-fill bias)
+    if target == "m4live":
+        train_m4_live_listing(df)
     if target in ("all", "m7"):
         train_m7_fraud(df)
     if target in ("all", "m5"):
@@ -347,6 +392,6 @@ def main(target: str = "all"):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", default="all",
-                        choices=["all", "m1", "m2", "m3", "m4", "m5", "m6", "m7", "m8"])
+                        choices=["all", "m1", "m2", "m3", "m4", "m4live", "m5", "m6", "m7", "m8"])
     args = parser.parse_args()
     main(args.model)

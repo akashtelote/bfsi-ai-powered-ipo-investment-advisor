@@ -32,3 +32,14 @@ async def cache_set(key: str, value: Any, ttl: int = DEFAULT_TTL):
         await r.setex(key, ttl, json.dumps(value))
     except Exception:
         pass
+
+
+async def cache_bust(prefix: str):
+    """Delete all cached keys that start with `prefix`. Safe to call when Redis is down."""
+    try:
+        r = await get_redis()
+        keys = await r.keys(f"{prefix}*")
+        if keys:
+            await r.delete(*keys)
+    except Exception:
+        pass

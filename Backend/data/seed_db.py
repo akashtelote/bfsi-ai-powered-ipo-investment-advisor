@@ -542,11 +542,13 @@ DEMO_DATA = [
     {
         "ipo": {
             "id": "firstcry_2024", "company_name": "Brainbees Solutions (FirstCry)", "sector": "Consumer",
-            "status": "open", "issue_size_cr": 4193, "price_band_low": 440, "price_band_high": 465,
-            "open_date": "2026-04-20", "close_date": "2026-04-23",
+            "status": "listed", "issue_size_cr": 4193, "price_band_low": 440, "price_band_high": 465,
+            "open_date": "2024-08-06", "close_date": "2024-08-08", "listing_date": "2024-08-13",
+            "listing_price": 440.0, "listing_gain_pct": -5.4,
+            "promoter_stake_pre": 15.0, "ofs_pct": 60.3, "fresh_issue_pct": 39.7,
             "financial_score": 58, "sentiment_score": 68, "risk_score": 58,
             "risk_label": "Medium", "confidence_score": 60, "valuation_label": "Fair",
-            "overall_sub_multiple": 12.0,
+            "overall_sub_multiple": 12.83,
         },
         "_financial": {"profitability_score": 40, "growth_score": 72, "liquidity_score": 60,
                        "solvency_score": 55, "efficiency_score": 62},
@@ -576,239 +578,86 @@ DEMO_DATA = [
         "_subscription": {"qib_predicted": 24.2, "hni_predicted": 9.8, "rii_predicted": 2.8,
                           "overall_predicted": 12.0, "allotment_probability": 0.38},
     },
-    # ── 15. TechIndia Solutions (demo open) ───────────────────────────────────
+    # ── 15. Ather Energy (listed May 2025) ───────────────────────────────────
     {
         "ipo": {
-            "id": "demo_ipo_1", "company_name": "TechIndia Solutions", "sector": "IT Services",
-            "status": "open", "issue_size_cr": 2500, "price_band_low": 380, "price_band_high": 400,
-            "open_date": "2026-04-21", "close_date": "2026-04-24",
-            "promoter_stake_pre": 62.0, "ofs_pct": 30.0, "fresh_issue_pct": 70.0,
-            "financial_score": 78, "sentiment_score": 74, "risk_score": 26,
-            "risk_label": "Low", "confidence_score": 76, "valuation_label": "Fair",
-            "overall_sub_multiple": 28.5,
+            "id": "ather_energy_2025", "company_name": "Ather Energy", "sector": "Electric Vehicles",
+            "status": "listed", "issue_size_cr": 2981, "price_band_low": 304, "price_band_high": 321,
+            "open_date": "2025-04-28", "close_date": "2025-04-30", "listing_date": "2025-05-06",
+            "listing_price": 303.7, "listing_gain_pct": -5.4,
+            "promoter_stake_pre": 28.6, "ofs_pct": 0.0, "fresh_issue_pct": 100.0,
+            "financial_score": 46, "sentiment_score": 74, "risk_score": 68,
+            "risk_label": "High", "confidence_score": 52, "valuation_label": "Expensive",
+            "overall_sub_multiple": 1.8,
         },
-        "_financial": {"profitability_score": 80, "growth_score": 76, "liquidity_score": 78,
-                       "solvency_score": 80, "efficiency_score": 76},
-        "_sentiment": {"score": 74, "label": "positive", "positive_pct": 60, "neutral_pct": 28,
-                       "negative_pct": 12, "top_keywords": ["techIndia", "saas", "engineering", "export", "profitability"],
-                       "news_volume_7d": 84},
+        "_financial": {"profitability_score": 22, "growth_score": 86, "liquidity_score": 44,
+                       "solvency_score": 38, "efficiency_score": 40},
+        "_sentiment": {"score": 74, "label": "positive", "positive_pct": 60, "neutral_pct": 24,
+                       "negative_pct": 16, "top_keywords": ["ather", "ev", "scooter", "electric", "bengaluru"],
+                       "news_volume_7d": 168},
         "_risk": {
-            "risk_score": 26, "risk_label": "Low", "prob_low": 0.68, "prob_medium": 0.26, "prob_high": 0.06,
+            "risk_score": 68, "risk_label": "High", "prob_low": 0.10, "prob_medium": 0.28, "prob_high": 0.62,
             "shap_top_drivers": [
-                {"feature": "roce", "value": 2.2, "direction": "decreases_risk", "display_name": "Strong ROCE"},
-                {"feature": "net_profit_margin", "value": 1.8, "direction": "decreases_risk", "display_name": "Profit Margin"},
-                {"feature": "revenue_growth_yoy", "value": 1.6, "direction": "decreases_risk", "display_name": "Revenue Growth"},
-                {"feature": "promoter_stake_pre", "value": 1.2, "direction": "decreases_risk", "display_name": "Promoter Stake"},
-                {"feature": "debt_equity_ratio", "value": -0.6, "direction": "increases_risk", "display_name": "Moderate Leverage"},
-            ],
-            "fraud_flags": [],
-        },
-        "_peers": {
-            "ipo_pe": 24.8, "peer_pe_median": 26.4, "peer_ev_ebitda_median": 16.8,
-            "valuation_label": "Fair",
-            "peers": [
-                {"ticker": "INFY", "name": "Infosys", "pe": 27.8, "ev_ebitda": 17.2, "market_cap_cr": 620000},
-                {"ticker": "WIPRO", "name": "Wipro", "pe": 21.3, "ev_ebitda": 14.8, "market_cap_cr": 245000},
-                {"ticker": "MPHASIS", "name": "Mphasis", "pe": 28.4, "ev_ebitda": 18.6, "market_cap_cr": 48000},
-            ],
-        },
-        "_subscription": {"qib_predicted": 58.4, "hni_predicted": 22.8, "rii_predicted": 5.6,
-                          "overall_predicted": 28.5, "allotment_probability": 0.16},
-    },
-    # ── 16. GreenPower Energy (demo open) ─────────────────────────────────────
-    {
-        "ipo": {
-            "id": "demo_ipo_2", "company_name": "GreenPower Energy", "sector": "Renewable Energy",
-            "status": "open", "issue_size_cr": 1800, "price_band_low": 250, "price_band_high": 265,
-            "open_date": "2026-04-20", "close_date": "2026-04-23",
-            "promoter_stake_pre": 58.5, "ofs_pct": 20.0, "fresh_issue_pct": 80.0,
-            "financial_score": 62, "sentiment_score": 82, "risk_score": 44,
-            "risk_label": "Medium", "confidence_score": 68, "valuation_label": "Fair",
-            "overall_sub_multiple": 18.2,
-        },
-        "_financial": {"profitability_score": 55, "growth_score": 72, "liquidity_score": 60,
-                       "solvency_score": 58, "efficiency_score": 65},
-        "_sentiment": {"score": 82, "label": "positive", "positive_pct": 68, "neutral_pct": 24,
-                       "negative_pct": 8, "top_keywords": ["renewable", "solar", "greenpower", "net_zero", "energy_transition"],
-                       "news_volume_7d": 118},
-        "_risk": {
-            "risk_score": 44, "risk_label": "Medium", "prob_low": 0.32, "prob_medium": 0.50, "prob_high": 0.18,
-            "shap_top_drivers": [
-                {"feature": "revenue_growth_yoy", "value": 2.0, "direction": "decreases_risk", "display_name": "Capacity Growth"},
-                {"feature": "gmp_premium", "value": 1.4, "direction": "decreases_risk", "display_name": "GMP Positive"},
-                {"feature": "debt_equity_ratio", "value": -2.2, "direction": "increases_risk", "display_name": "Capital-Intensive Leverage"},
-                {"feature": "cash_conversion_cycle", "value": -1.0, "direction": "increases_risk", "display_name": "Long Project Cycle"},
-                {"feature": "fresh_issue_pct", "value": 1.0, "direction": "decreases_risk", "display_name": "Capital for Expansion"},
-            ],
-            "fraud_flags": [],
-        },
-        "_peers": {
-            "ipo_pe": 28.6, "peer_pe_median": 32.4, "peer_ev_ebitda_median": 18.6,
-            "valuation_label": "Fair",
-            "peers": [
-                {"ticker": "ADANIGREEN", "name": "Adani Green Energy", "pe": 124.4, "ev_ebitda": 42.6, "market_cap_cr": 320000},
-                {"ticker": "TATAPOWER", "name": "Tata Power", "pe": 42.8, "ev_ebitda": 14.2, "market_cap_cr": 130000},
-                {"ticker": "GREENKO", "name": "Greenko Group (private)", "pe": None, "ev_ebitda": 22.4, "market_cap_cr": None},
-            ],
-        },
-        "_subscription": {"qib_predicted": 38.2, "hni_predicted": 15.6, "rii_predicted": 3.8,
-                          "overall_predicted": 18.2, "allotment_probability": 0.24},
-    },
-    # ── 17. HealthFirst Diagnostics (upcoming) ────────────────────────────────
-    {
-        "ipo": {
-            "id": "demo_ipo_3", "company_name": "HealthFirst Diagnostics", "sector": "Healthcare",
-            "status": "upcoming", "issue_size_cr": 950, "price_band_low": 190, "price_band_high": 200,
-            "open_date": "2026-04-28",
-            "promoter_stake_pre": 68.0, "ofs_pct": 40.0, "fresh_issue_pct": 60.0,
-            "financial_score": 80, "sentiment_score": 70, "risk_score": 28,
-            "risk_label": "Low", "confidence_score": 75, "valuation_label": "Fair",
-            "overall_sub_multiple": 42.0,
-        },
-        "_financial": {"profitability_score": 82, "growth_score": 78, "liquidity_score": 80,
-                       "solvency_score": 82, "efficiency_score": 78},
-        "_sentiment": {"score": 70, "label": "positive", "positive_pct": 56, "neutral_pct": 32,
-                       "negative_pct": 12, "top_keywords": ["diagnostics", "healthcare", "labs", "growth", "india"],
-                       "news_volume_7d": 68},
-        "_risk": {
-            "risk_score": 28, "risk_label": "Low", "prob_low": 0.66, "prob_medium": 0.28, "prob_high": 0.06,
-            "shap_top_drivers": [
-                {"feature": "net_profit_margin", "value": 2.0, "direction": "decreases_risk", "display_name": "Profit Margin"},
-                {"feature": "promoter_stake_pre", "value": 1.8, "direction": "decreases_risk", "display_name": "Promoter Stake"},
-                {"feature": "roce", "value": 1.6, "direction": "decreases_risk", "display_name": "ROCE"},
-                {"feature": "revenue_growth_yoy", "value": 1.4, "direction": "decreases_risk", "display_name": "Revenue Growth"},
-                {"feature": "ofs_pct", "value": -0.8, "direction": "increases_risk", "display_name": "Partial OFS"},
-            ],
-            "fraud_flags": [],
-        },
-        "_peers": {
-            "ipo_pe": 30.4, "peer_pe_median": 42.8, "peer_ev_ebitda_median": 26.4,
-            "valuation_label": "Fair",
-            "peers": [
-                {"ticker": "DRREDDY", "name": "Dr Lal PathLabs", "pe": 48.4, "ev_ebitda": 28.6, "market_cap_cr": 18000},
-                {"ticker": "METROPOLIS", "name": "Metropolis Healthcare", "pe": 42.1, "ev_ebitda": 24.8, "market_cap_cr": 6200},
-                {"ticker": "THYROCARE", "name": "Thyrocare Technologies", "pe": 32.6, "ev_ebitda": 18.4, "market_cap_cr": 2800},
-            ],
-        },
-        "_subscription": {"qib_predicted": 88.4, "hni_predicted": 36.2, "rii_predicted": 8.4,
-                          "overall_predicted": 42.0, "allotment_probability": 0.11},
-    },
-    # ── 18. SmartEdu Platform (upcoming) ─────────────────────────────────────
-    {
-        "ipo": {
-            "id": "demo_ipo_5", "company_name": "SmartEdu Platform", "sector": "EdTech",
-            "status": "upcoming", "issue_size_cr": 1200, "price_band_low": 280, "price_band_high": 295,
-            "open_date": "2026-04-29",
-            "promoter_stake_pre": 48.0, "ofs_pct": 35.0, "fresh_issue_pct": 65.0,
-            "financial_score": 60, "sentiment_score": 65, "risk_score": 50,
-            "risk_label": "Medium", "confidence_score": 62, "valuation_label": "Fair",
-            "overall_sub_multiple": 22.5,
-        },
-        "_financial": {"profitability_score": 52, "growth_score": 74, "liquidity_score": 62,
-                       "solvency_score": 58, "efficiency_score": 54},
-        "_sentiment": {"score": 65, "label": "positive", "positive_pct": 50, "neutral_pct": 34,
-                       "negative_pct": 16, "top_keywords": ["edtech", "learning", "k12", "revenue", "growth"],
-                       "news_volume_7d": 72},
-        "_risk": {
-            "risk_score": 50, "risk_label": "Medium", "prob_low": 0.24, "prob_medium": 0.50, "prob_high": 0.26,
-            "shap_top_drivers": [
-                {"feature": "revenue_growth_yoy", "value": 1.8, "direction": "decreases_risk", "display_name": "Student Growth"},
-                {"feature": "net_profit_margin", "value": -1.6, "direction": "increases_risk", "display_name": "Thin Margins"},
-                {"feature": "promoter_stake_pre", "value": -0.8, "direction": "increases_risk", "display_name": "Promoter Dilution Risk"},
-                {"feature": "cash_conversion_cycle", "value": -1.0, "direction": "increases_risk", "display_name": "Content Investment Cycle"},
-                {"feature": "brand_strength", "value": 0.8, "direction": "decreases_risk", "display_name": "Brand Recognition"},
-            ],
-            "fraud_flags": [],
-        },
-        "_peers": {
-            "ipo_pe": None, "peer_pe_median": 48.4, "peer_ev_ebitda_median": 28.6,
-            "valuation_label": "Fair",
-            "peers": [
-                {"ticker": "CARERATING", "name": "CARE Ratings", "pe": 22.4, "ev_ebitda": 14.8, "market_cap_cr": 4200},
-                {"ticker": "NIIT", "name": "NIIT Ltd", "pe": 28.6, "ev_ebitda": 18.2, "market_cap_cr": 2800},
-            ],
-        },
-        "_subscription": {"qib_predicted": 46.4, "hni_predicted": 18.8, "rii_predicted": 4.2,
-                          "overall_predicted": 22.5, "allotment_probability": 0.20},
-    },
-    # ── 19. IndusRenew Power (upcoming) ───────────────────────────────────────
-    {
-        "ipo": {
-            "id": "demo_ipo_6", "company_name": "IndusRenew Power", "sector": "Renewable Energy",
-            "status": "upcoming", "issue_size_cr": 2200, "price_band_low": 185, "price_band_high": 195,
-            "open_date": "2026-04-30",
-            "promoter_stake_pre": 72.0, "ofs_pct": 25.0, "fresh_issue_pct": 75.0,
-            "financial_score": 70, "sentiment_score": 76, "risk_score": 36,
-            "risk_label": "Low", "confidence_score": 71, "valuation_label": "Fair",
-            "overall_sub_multiple": 32.4,
-        },
-        "_financial": {"profitability_score": 68, "growth_score": 78, "liquidity_score": 66,
-                       "solvency_score": 70, "efficiency_score": 68},
-        "_sentiment": {"score": 76, "label": "positive", "positive_pct": 62, "neutral_pct": 28,
-                       "negative_pct": 10, "top_keywords": ["indusrenew", "solar", "wind", "renewable", "ppa"],
-                       "news_volume_7d": 82},
-        "_risk": {
-            "risk_score": 36, "risk_label": "Low", "prob_low": 0.56, "prob_medium": 0.36, "prob_high": 0.08,
-            "shap_top_drivers": [
-                {"feature": "revenue_growth_yoy", "value": 2.0, "direction": "decreases_risk", "display_name": "Capacity Growth"},
-                {"feature": "fresh_issue_pct", "value": 1.4, "direction": "decreases_risk", "display_name": "Expansion Capital"},
-                {"feature": "promoter_stake_pre", "value": 1.2, "direction": "decreases_risk", "display_name": "Promoter Commitment"},
-                {"feature": "debt_equity_ratio", "value": -1.8, "direction": "increases_risk", "display_name": "Project Finance Debt"},
-                {"feature": "cash_conversion_cycle", "value": -0.8, "direction": "increases_risk", "display_name": "Long Gestation Period"},
-            ],
-            "fraud_flags": [],
-        },
-        "_peers": {
-            "ipo_pe": 32.8, "peer_pe_median": 48.6, "peer_ev_ebitda_median": 22.4,
-            "valuation_label": "Fair",
-            "peers": [
-                {"ticker": "TATAPOWER", "name": "Tata Power Renewables", "pe": 42.8, "ev_ebitda": 14.2, "market_cap_cr": 130000},
-                {"ticker": "NTPC", "name": "NTPC Green Energy", "pe": 28.4, "ev_ebitda": 12.8, "market_cap_cr": 340000},
-            ],
-        },
-        "_subscription": {"qib_predicted": 68.4, "hni_predicted": 26.8, "rii_predicted": 5.8,
-                          "overall_predicted": 32.4, "allotment_probability": 0.14},
-    },
-    # ── 20. AgriTech Ventures (upcoming, High risk) ───────────────────────────
-    {
-        "ipo": {
-            "id": "demo_ipo_4", "company_name": "AgriTech Ventures", "sector": "Agriculture",
-            "status": "upcoming", "issue_size_cr": 600, "price_band_low": 120, "price_band_high": 128,
-            "open_date": "2026-04-30",
-            "promoter_stake_pre": 40.0, "ofs_pct": 55.0, "fresh_issue_pct": 45.0,
-            "financial_score": 55, "sentiment_score": 58, "risk_score": 72,
-            "risk_label": "High", "confidence_score": 45, "valuation_label": "Expensive",
-            "overall_sub_multiple": 8.4,
-        },
-        "_financial": {"profitability_score": 42, "growth_score": 62, "liquidity_score": 52,
-                       "solvency_score": 48, "efficiency_score": 58},
-        "_sentiment": {"score": 58, "label": "neutral", "positive_pct": 40, "neutral_pct": 38,
-                       "negative_pct": 22, "top_keywords": ["agritech", "farming", "drones", "startup", "subsidy"],
-                       "news_volume_7d": 42},
-        "_risk": {
-            "risk_score": 72, "risk_label": "High", "prob_low": 0.08, "prob_medium": 0.26, "prob_high": 0.66,
-            "shap_top_drivers": [
-                {"feature": "ofs_pct", "value": -2.4, "direction": "increases_risk", "display_name": "High OFS Ratio"},
-                {"feature": "net_profit_margin", "value": -2.0, "direction": "increases_risk", "display_name": "Pre-Profit Stage"},
-                {"feature": "promoter_stake_pre", "value": -1.6, "direction": "increases_risk", "display_name": "Low Promoter Skin"},
-                {"feature": "revenue_growth_yoy", "value": 1.2, "direction": "decreases_risk", "display_name": "Revenue Growth"},
-                {"feature": "cash_conversion_cycle", "value": -1.0, "direction": "increases_risk", "display_name": "Seasonal Working Capital"},
+                {"feature": "net_profit_margin", "value": -3.4, "direction": "increases_risk", "display_name": "Deep Losses"},
+                {"feature": "cash_conversion_cycle", "value": -2.0, "direction": "increases_risk", "display_name": "Cash Burn Rate"},
+                {"feature": "debt_equity_ratio", "value": -1.8, "direction": "increases_risk", "display_name": "High Leverage"},
+                {"feature": "revenue_growth_yoy", "value": 2.6, "direction": "decreases_risk", "display_name": "Volume Growth"},
+                {"feature": "fresh_issue_pct", "value": 1.0, "direction": "decreases_risk", "display_name": "Pure Fresh Capital"},
             ],
             "fraud_flags": [
-                {"rule_id": "FR002", "severity": "high", "description": "OFS proportion exceeds 50% — primary promoter exit signal"},
-                {"rule_id": "FR003", "severity": "medium", "description": "Revenue concentration in top 3 customers exceeds 60%"},
+                {"rule_id": "FR001", "severity": "medium", "description": "Consecutive operating losses with no profitability timeline"},
             ],
         },
         "_peers": {
-            "ipo_pe": None, "peer_pe_median": 18.4, "peer_ev_ebitda_median": 12.6,
+            "ipo_pe": None, "peer_pe_median": 28.4, "peer_ev_ebitda_median": 18.6,
             "valuation_label": "Expensive",
             "peers": [
-                {"ticker": "RALLIS", "name": "Rallis India", "pe": 22.4, "ev_ebitda": 12.8, "market_cap_cr": 4200},
-                {"ticker": "KAVERI", "name": "Kaveri Seed Company", "pe": 14.6, "ev_ebitda": 10.4, "market_cap_cr": 3200},
+                {"ticker": "OLAEELEC", "name": "Ola Electric", "pe": None, "ev_ebitda": None, "market_cap_cr": 32000},
+                {"ticker": "BAJAJ-AUTO", "name": "Bajaj Auto", "pe": 28.4, "ev_ebitda": 22.1, "market_cap_cr": 280000},
+                {"ticker": "HEROMOTOCO", "name": "Hero MotoCorp", "pe": 22.6, "ev_ebitda": 14.8, "market_cap_cr": 72000},
             ],
         },
-        "_subscription": {"qib_predicted": 18.4, "hni_predicted": 6.8, "rii_predicted": 1.6,
-                          "overall_predicted": 8.4, "allotment_probability": 0.42},
+        "_subscription": {"qib_predicted": 3.2, "hni_predicted": 1.8, "rii_predicted": 0.8,
+                          "overall_predicted": 1.8, "allotment_probability": 0.78},
+    },
+    # ── 20. PhysicsWallah (listed November 2025) ──────────────────────────────
+    {
+        "ipo": {
+            "id": "physicswallah_2025", "company_name": "PhysicsWallah", "sector": "EdTech",
+            "status": "listed", "issue_size_cr": 3500, "price_band_low": 1340, "price_band_high": 1420,
+            "listing_date": "2025-11-18", "listing_gain_pct": 33.0,
+            "promoter_stake_pre": 72.4, "ofs_pct": 30.0, "fresh_issue_pct": 70.0,
+            "financial_score": 58, "sentiment_score": 72, "risk_score": 52,
+            "risk_label": "Medium", "confidence_score": 63, "valuation_label": "Expensive",
+            "overall_sub_multiple": 22.8,
+        },
+        "_financial": {"profitability_score": 48, "growth_score": 78, "liquidity_score": 60,
+                       "solvency_score": 55, "efficiency_score": 49},
+        "_sentiment": {"score": 72, "label": "positive", "positive_pct": 58, "neutral_pct": 28,
+                       "negative_pct": 14, "top_keywords": ["physicswallah", "alakh", "edtech", "jee", "neet"],
+                       "news_volume_7d": 196},
+        "_risk": {
+            "risk_score": 52, "risk_label": "Medium", "prob_low": 0.22, "prob_medium": 0.50, "prob_high": 0.28,
+            "shap_top_drivers": [
+                {"feature": "revenue_growth_yoy", "value": 2.4, "direction": "decreases_risk", "display_name": "Student Enrolment Growth"},
+                {"feature": "promoter_stake_pre", "value": 1.6, "direction": "decreases_risk", "display_name": "Founder Commitment"},
+                {"feature": "net_profit_margin", "value": -1.8, "direction": "increases_risk", "display_name": "Thin Margins"},
+                {"feature": "cash_conversion_cycle", "value": -1.4, "direction": "increases_risk", "display_name": "Content & Tech Capex"},
+                {"feature": "valuation_premium", "value": -1.0, "direction": "increases_risk", "display_name": "High P/S Valuation"},
+            ],
+            "fraud_flags": [],
+        },
+        "_peers": {
+            "ipo_pe": None, "peer_pe_median": 52.4, "peer_ev_ebitda_median": 32.8,
+            "valuation_label": "Expensive",
+            "peers": [
+                {"ticker": "ZOMATO", "name": "Zomato (tech comps)", "pe": 220.4, "ev_ebitda": 68.2, "market_cap_cr": 218000},
+                {"ticker": "CAREER", "name": "Career Point", "pe": 18.4, "ev_ebitda": 12.6, "market_cap_cr": 800},
+                {"ticker": "RESONANCE", "name": "Resonance Eduventures (private)", "pe": None, "ev_ebitda": None, "market_cap_cr": None},
+            ],
+        },
+        "_subscription": {"qib_predicted": 46.2, "hni_predicted": 18.4, "rii_predicted": 4.2,
+                          "overall_predicted": 22.8, "allotment_probability": 0.20},
     },
 ]
 
@@ -903,54 +752,65 @@ DEMO_HEADLINES: dict[str, list[str]] = {
         "Continued losses in core operations weigh on FirstCry near-term profitability outlook",
         "FirstCry international expansion adds geographic optionality to the growth story",
     ],
-    "demo_ipo_1": [
-        "TechIndia Solutions revenue grew 22 percent as global clients expanded India delivery centres",
-        "Analysts initiated Buy on TechIndia citing strong EBITDA margins and cash generation",
-        "Strong order book and multi-year SaaS contract wins underpin TechIndia growth outlook",
-        "TechIndia reported improving return on equity and strong operating cash flows",
+    "hdb_financial_2026": [
+        "HDB Financial Services loan book grew strongly backed by HDFC Bank distribution network",
+        "Analysts bullish on HDB Financial citing strong NIM and asset quality metrics",
+        "HDB Financial Services reported robust profitability with improving return on assets",
+        "Strong parentage and retail lending franchise reinforce HDB Financial growth outlook",
     ],
-    "demo_ipo_2": [
-        "GreenPower Energy capacity grew strongly backed by government renewable energy push",
-        "Long-term power purchase agreements provide GreenPower strong revenue visibility",
-        "Analysts bullish on GreenPower Energy as India accelerates clean energy transition",
-        "GreenPower secured large solar project boosting revenue and earnings outlook",
+    "groww_2026": [
+        "Groww active user base crossed 10 million as equity and mutual fund adoption surged",
+        "Analysts positive on Groww market share gains in discount broking and wealth management",
+        "Groww revenue grew strongly as daily trading volumes and AUM expanded significantly",
+        "Path to sustainable profitability improving as Groww scales mutual fund distribution",
     ],
-    "demo_ipo_3": [
-        "HealthFirst Diagnostics revenue grew as preventive health awareness increased post pandemic",
-        "Analysts positive on HealthFirst high ROCE and durable asset-light franchise model",
-        "Strong demand for organised diagnostics supports HealthFirst sustained revenue growth",
-        "HealthFirst expanded lab network to 250 centres reinforcing competitive market position",
+    "tata_capital_2026": [
+        "Tata Capital loan book grew with strong asset quality supported by Tata group backing",
+        "Analysts positive on Tata Capital diversified NBFC model and credit rating advantage",
+        "Strong capitalisation and brand trust reinforce Tata Capital competitive positioning",
+        "Tata Capital NIM expanded as retail lending mix improved and cost of funds declined",
     ],
-    "demo_ipo_5": [
-        "SmartEdu Platform gross margins improved as digital learning content scaled up",
-        "Analysts cautiously positive on SmartEdu as K-12 online tutoring adoption grew",
-        "Path to profitability depends on reducing student acquisition costs say analysts",
-        "SmartEdu revenue grew as paid learner base expanded toward five million target",
+    "nsdl_2026": [
+        "NSDL demat account additions accelerated as retail investor participation in equities grew",
+        "NSDL reported strong profitability backed by high-margin market infrastructure monopoly",
+        "Analysts positive on NSDL recurring transaction fee revenue and asset-light model",
+        "Growth in systematic investment and demat registrations drives NSDL long-term revenue",
     ],
-    "demo_ipo_6": [
-        "IndusRenew Power revenue grew backed by long-term power purchase agreements",
-        "Analysts positive on IndusRenew diversified renewable capacity expansion pipeline",
-        "Strong promoter commitment and capital allocation reinforce IndusRenew growth outlook",
-        "IndusRenew secured multiple solar and wind projects improving earnings visibility",
+    "ather_energy_2025": [
+        "Ather Energy EV scooter deliveries grew strongly as India electric two-wheeler market expanded",
+        "Analysts cautious on Ather Energy valuation citing continued operating losses",
+        "Ather Energy listed with 14 percent gain as retail demand supported by government FAME scheme",
+        "New Ather 450X models and Gen 3 platform expected to drive volume and margin recovery",
     ],
-    "demo_ipo_4": [
-        "AgriTech Ventures reported losses and revenue concentrated in top three clients",
-        "Analysts cautious as high promoter stake sale signals exit concerns at listing",
-        "Dependency on government subsidies and seasonal cash flows raise risk concerns",
-        "Customer concentration risk and thin margins weigh on AgriTech Ventures outlook",
+    "physicswallah_2025": [
+        "PhysicsWallah revenue grew strongly as student enrolments expanded across JEE and NEET",
+        "PhysicsWallah listed with 33 percent gain driven by strong retail and institutional demand",
+        "Analysts positive on PhysicsWallah affordable edtech model disrupting traditional coaching",
+        "Alakh Pandey led PhysicsWallah expanding hybrid online-offline presence across India",
     ],
 }
 
 
 # ─── Main seed function ───────────────────────────────────────────────────────
 
-async def seed():
+async def clear_db():
+    """Drop all rows from every score table and the ipos table."""
+    async with SessionLocal() as db:
+        for model_cls in [FinancialScore, SentimentScore, RiskScore, PeerData, SubscriptionForecast, IPO]:
+            await db.execute(__import__("sqlalchemy", fromlist=["delete"]).delete(model_cls))
+        await db.commit()
+    print("[INFO] All tables cleared.")
+
+
+async def seed(fresh: bool = False):
     await init_db()
+    if fresh:
+        await clear_db()
     async with SessionLocal() as db:
         if os.path.exists(MASTER_CSV):
             await _seed_from_csv(db)
         else:
-            print(f"[INFO] {MASTER_CSV} not found. Inserting 20 curated demo IPOs.")
+            print(f"[INFO] {MASTER_CSV} not found. Inserting curated demo IPOs.")
             await _insert_demo_data(db)
 
 
@@ -1102,4 +962,8 @@ def _s(val) -> str | None:
 
 
 if __name__ == "__main__":
-    asyncio.run(seed())
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--fresh", action="store_true", help="Clear all tables before seeding")
+    args = parser.parse_args()
+    asyncio.run(seed(fresh=args.fresh))

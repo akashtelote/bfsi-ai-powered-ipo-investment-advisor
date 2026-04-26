@@ -16,6 +16,9 @@ class IPOSummary(BaseModel):
     open_date: Optional[str] = None
     close_date: Optional[str] = None
     listing_date: Optional[str] = None
+    listing_price: Optional[float] = None
+    listing_gain_pct: Optional[float] = None
+    promoter_stake_pre: Optional[float] = None
     financial_score: Optional[float] = None
     sentiment_score: Optional[float] = None
     risk_score: Optional[float] = None
@@ -172,6 +175,7 @@ class IPODetail(BaseModel):
     peers: Optional[PeersResponse] = None
     subscription: Optional[SubscriptionResponse] = None
     verdict: Optional[str] = None  # "Strong Buy" | "Buy" | "Neutral" | "Avoid"
+    ai_narrative: Optional[str] = None
 
 
 # ─── Investor Profile ─────────────────────────────────────────────────────────
@@ -220,6 +224,12 @@ class LiveAnalysisRequest(BaseModel):
     price_band_low: float
     price_band_high: float
     news_override: Optional[list[str]] = None   # bypasses RSS fetch
+    # Optional date/actual-gain fields (used when seeding from ipoalerts.in)
+    open_date: Optional[str] = None
+    close_date: Optional[str] = None
+    listing_date: Optional[str] = None
+    listing_price: Optional[float] = None
+    actual_listing_gain_pct: Optional[float] = None  # overrides ML prediction for listed IPOs
 
 
 class LiveAnalysisResponse(BaseModel):
@@ -233,3 +243,4 @@ class LiveAnalysisResponse(BaseModel):
     verdict: str
     market_context: MarketContext
     news_headlines: list[str]
+    ai_narrative: Optional[str] = None

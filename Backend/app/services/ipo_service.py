@@ -4,8 +4,9 @@ Business logic for IPO listing, detail, and comparison.
 Routes delegate here; this layer handles DB queries and response assembly.
 """
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, func
+from sqlalchemy import select, func, case
 from typing import Optional
+from datetime import date
 
 from app.models.db_models import IPO, FinancialScore, SentimentScore, RiskScore, PeerData, SubscriptionForecast
 from app.models.schemas import (
@@ -13,6 +14,22 @@ from app.models.schemas import (
     FinancialScoreResponse, SentimentResponse, RiskResponse,
     PeersResponse, SubscriptionResponse, FinancialPillars,
 )
+
+
+def _effective_status(ipo) -> str:
+    """
+    Compute the correct status from dates rather than trusting the stored value.
+    Dates are stored as 'YYYY-MM-DD' strings or None.
+    """
+    today = date.today().isoformat()
+    if ipo.listing_date and ipo.listing_date <= today:
+        return "listed"
+    if ipo.close_date and ipo.close_date <= today:
+        return "listed"
+    if ipo.open_date and ipo.open_date <= today:
+        if not ipo.close_date or ipo.close_date >= today:
+            return "open"
+    return ipo.status  # fall back to stored value for live IPOs without dates
 
 
 def ipo_verdict(confidence_score: float) -> str:
@@ -45,13 +62,25 @@ async def get_ipo_list(
     count_query = select(func.count()).select_from(query.subquery())
     total = (await db.execute(count_query)).scalar_one()
 
+    # Status priority: open first, then upcoming, then listed
+    status_priority = case(
+        (IPO.status == "open", 0),
+        (IPO.status == "upcoming", 1),
+        else_=2,
+    )
     sort_col = getattr(IPO, sort_by, IPO.confidence_score)
-    query = query.order_by(sort_col.desc().nullslast()).offset((page - 1) * page_size).limit(page_size)
+    query = query.order_by(
+        status_priority,
+        sort_col.desc().nullslast(),
+    ).offset((page - 1) * page_size).limit(page_size)
     result = await db.execute(query)
     ipos = result.scalars().all()
 
     return IPOListResponse(
-        items=[IPOSummary.model_validate(ipo) for ipo in ipos],
+        items=[
+            IPOSummary.model_validate(ipo).model_copy(update={"status": _effective_status(ipo)})
+            for ipo in ipos
+        ],
         total=total,
         page=page,
         page_size=page_size,
@@ -70,7 +99,7 @@ async def get_ipo_detail(db: AsyncSession, ipo_id: str) -> Optional[IPODetail]:
     sub = (await db.execute(select(SubscriptionForecast).where(SubscriptionForecast.ipo_id == ipo_id))).scalars().first()
 
     return IPODetail(
-        ipo=IPOSummary.model_validate(ipo),
+        ipo=IPOSummary.model_validate(ipo).model_copy(update={"status": _effective_status(ipo)}),
         financial=build_financial(ipo_id, fin),
         sentiment=build_sentiment(ipo_id, sent),
         risk=build_risk(ipo_id, risk),

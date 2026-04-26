@@ -1,4 +1,6 @@
+import asyncio
 import math
+from concurrent.futures import ThreadPoolExecutor
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -16,8 +18,11 @@ from app.services.ipo_service import (
     get_risk, get_peers, get_subscription, get_fraud_flags,
 )
 from app.ml.model_orchestrator import ModelOrchestrator
+from app.ml.dial import generate_narrative_sync
 
 router = APIRouter(prefix="/api/ipos", tags=["ipos"])
+_executor = ThreadPoolExecutor(max_workers=2)
+_narrative_cache: dict[str, str] = {}  # ipo_id → DIAL narrative text
 
 
 @router.get("", response_model=IPOListResponse)
@@ -28,7 +33,8 @@ async def list_ipos(
     status: Optional[str] = None,
     risk_label: Optional[str] = None,
     sort_by: str = Query(default="confidence_score",
-                         enum=["confidence_score", "financial_score", "sentiment_score", "issue_size_cr"]),
+                         enum=["confidence_score", "financial_score", "sentiment_score",
+                               "issue_size_cr", "listing_date"]),
     db: AsyncSession = Depends(get_db),
 ):
     cache_key = f"ipos:{page}:{page_size}:{sector}:{status}:{risk_label}:{sort_by}"
@@ -59,6 +65,26 @@ async def get_ipo(ipo_id: str, db: AsyncSession = Depends(get_db)):
     detail = await get_ipo_detail(db, ipo_id)
     if not detail:
         raise HTTPException(status_code=404, detail=f"IPO {ipo_id} not found")
+
+    # Attach DIAL narrative (cached per ipo_id so it only generates once per process)
+    if detail.verdict and ipo_id not in _narrative_cache:
+        loop = asyncio.get_running_loop()
+        narrative = await loop.run_in_executor(
+            _executor,
+            generate_narrative_sync,
+            detail.ipo.company_name,
+            detail.ipo.sector,
+            detail.verdict,
+            float(detail.ipo.confidence_score or 50),
+            detail.risk.risk_label if detail.risk else "Unknown",
+            float(detail.ipo.sentiment_score or 50),
+            float(detail.ipo.listing_gain_pct or 0),
+            {"nifty_30d_return": 0.0, "vix_current": 15.0},
+        )
+        if narrative:
+            _narrative_cache[ipo_id] = narrative
+
+    detail.ai_narrative = _narrative_cache.get(ipo_id)
     return detail
 
 

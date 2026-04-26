@@ -5,6 +5,7 @@ positive / neutral / negative probabilities per sentence.
 from __future__ import annotations
 
 import re
+import threading
 from collections import Counter
 
 _STOP_WORDS = {
@@ -25,15 +26,24 @@ class FinBERTSentimentAnalyzer:
 
     def __init__(self):
         self._pipeline = None
+        self._lock = threading.Lock()
 
     def _load(self):
-        if self._pipeline is None:
-            from transformers import pipeline as hf_pipeline
+        # Double-checked locking: fast path avoids the lock after first load
+        if self._pipeline is not None:
+            return
+        with self._lock:
+            if self._pipeline is not None:
+                return
+            # Import pipeline inside the lock so only one thread ever triggers
+            # the transformers lazy-module __getattr__ for the first time.
+            import transformers
+            hf_pipeline = transformers.pipeline
             self._pipeline = hf_pipeline(
                 "text-classification",
                 model=self.MODEL_NAME,
-                top_k=None,  # return all label scores (transformers 5.x API)
-                device=-1,   # CPU inference
+                top_k=None,   # return all label scores (transformers 5.x API)
+                device=-1,    # CPU inference
             )
 
     def analyze(self, texts: list[str]) -> dict:
